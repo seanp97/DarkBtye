@@ -49,7 +49,7 @@ def get_server_info(target):
         info["Ping Status"] = "Offline"
         print("    ❌ Server is offline or not responding")
 
-    print("\n[3] Performing a Port Scan (1-65535)...")
+    print("\n[3] Performing a Port Scan (1-65535)...(this may take a while)")
     time.sleep(0.5)
     nm = nmap.PortScanner()
     try:
@@ -147,6 +147,15 @@ def trace_route(target):
         return {"Traceroute": result.decode('utf-8')}
     except subprocess.CalledProcessError as e:
         return {"Error": str(e)}
+    
+
+def get_dns_ip(dns_name):
+    try:
+        # Get the IP address of the DNS server
+        dns_ip = socket.gethostbyname(dns_name)
+        return dns_ip
+    except socket.gaierror as e:
+        return f"Error resolving {dns_name}: {str(e)}"
 
 
 # Main execution
@@ -154,7 +163,9 @@ if __name__ == "__main__":
 
     target = input("\n🌐 Enter the target domain or IP: ")
 
-    ip_info = get_ip_info(target)
+    ip = get_dns_ip(target)
+
+    ip_info = get_ip_info(ip)
     print("\n🔍 IP Information:\n")
     for key, value in ip_info.items():
         print(f"    {key}: {value}")
@@ -162,32 +173,32 @@ if __name__ == "__main__":
     print("\n🔎 Scanning in progress...\n")
     time.sleep(1)
 
-    results = get_server_info(target)
+    results = get_server_info(ip)
 
     print("\n📌 Server Scan Report:\n")
     pprint(results)
 
     # Whois information
     print("\n📋 Whois Information:\n")
-    whois_info = get_whois_info(target)
+    whois_info = get_whois_info(ip)
     pprint(whois_info)
 
     # SSL Certificate Status
     print("\n🔒 SSL Certificate Information:\n")
-    ssl_info = check_ssl_certificate(target)
+    ssl_info = check_ssl_certificate(ip)
     pprint(ssl_info)
 
     # DNS Records
     print("\n🔍 DNS Records:\n")
-    dns_info = get_dns_records(target)
+    dns_info = get_dns_records(ip)
     pprint(dns_info)
 
     # DNS Lookup
     print("\n🔁 Reverse DNS Lookup:\n")
-    reverse_dns_info = get_reverse_dns(target)
+    reverse_dns_info = get_reverse_dns(ip)
     pprint(reverse_dns_info)
 
     # Trace Route
     print("\n🚧 Trace Route:\n")
-    trace_route_info = trace_route(target)
+    trace_route_info = trace_route(ip)
     pprint(trace_route_info)
