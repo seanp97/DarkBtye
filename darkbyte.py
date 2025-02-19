@@ -456,4 +456,4 @@ if __name__ == "__main__":
     print("\n🚀 Allowed HTTP Methods:\n", check_http_methods(target))
     print("\n🛠️ CMS Detection:\n", detect_cms(target))
     print("\n⚙️🔍 Technology Detection:\n", detect_technologies(target))
-    print("\n🔍 WordPress Plugins:", wordpress_plugins(target))
+    wordpress_plugins(target)
