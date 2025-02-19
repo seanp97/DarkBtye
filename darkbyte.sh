@@ -5,7 +5,6 @@ sudo apt update
 
 # Install required packages
 sudo apt install -y \
-    nmap \
     traceroute \
     whois \
     python3-pip
