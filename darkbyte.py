@@ -52,7 +52,7 @@ class DarkByte:
     def get_headers(self, target):
         self.target = target
         self.url = f"http://{self.target}"
-        print("\n📡 Fetching HTTP Headers...")
+        print("\n📡  Fetching HTTP Headers...")
         try:
             self.response = requests.get(self.url, timeout=5)
             return self.response.headers
